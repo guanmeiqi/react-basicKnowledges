@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="../build/react.js"></script>
+    <script src="../build/react-dom.js"></script>
+    <!--babel提供的实时编译-->
+    <script src="../build/browser.min.js"></script>
+</head>
+<body>
+<div id="example"></div>
+<div id="container"></div>
+<script type="text/babel">
+    // 1. 组件命名遵循驼峰命名，首字母大写
+    var  ComponentDemo = React.createClass ({
+         render:function(){
+            {
+                /* 2. 在一个组件的子元素位置使用注释要用 {} 包起来
+                 这是代码注释
+                 也可以是多行
+                 */
+            }
+            var name = this.props.name;
+            // 3. render 方法 return 回来的根元素只能是一个，超过会报错
+            //React只有一个限制， 组件只能渲染单个根节点。如果你想要返回多个节点，它们必须被包含在同一个节点里
+            // 4. { } 里面可以写JS代码
+            return (
+            <div>
+            hello, {name ? name : "我是默认的"}
+            </div>
+        );
+        }
+    })
+    ReactDOM.render(<ComponentDemo/>, document.getElementById('example'));
+    //5.JSX 嵌入变量
+    //可以通过 {变量名} 来将变量的值作为属性值
+    var x = 'http://www.alipay.com';
+    var y = <a href= {x} target="_blank">alipay.com</a>;
+    ReactDOM.render(y, document.getElementById('container'));
+</script>
+</body>
+</html>

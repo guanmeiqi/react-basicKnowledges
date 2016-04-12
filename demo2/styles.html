@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="../build/react.js"></script>
+    <script src="../build/react-dom.js"></script>
+    <!--babel提供的实时编译-->
+    <script src="../build/browser.min.js"></script>
+    <!--react提供的jsx解释器-->
+    <!--<script src="../build/JSXTransformer.js"></script>-->
+</head>
+<body>
+<div id="example"></div>
+<script type="text/babel">
+   var StyleDemo = React.createClass({
+        render:function(){
+            // 6. 在JS文件里面给组件定义样式
+            var MyComponentStyles = {
+                color: 'blue',
+                fontSize: '28px'
+            };
+            return (
+                    <div style={MyComponentStyles}>
+                    可以直接这样写行内样式
+                    </div>
+        )
+        }
+    })
+   ReactDOM.render(<StyleDemo/>, document.getElementById('example'));
+</script>
+</body>
+</html>

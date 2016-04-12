@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="../build/react.js"></script>
+    <script src="../build/react-dom.js"></script>
+    <!--babel提供的实时编译-->
+    <script src="../build/browser.min.js"></script>
+</head>
+<body>
+<div id="example"></div>
+<script type="text/babel">
+    var HelloMessage = React.createClass({
+        render: function() {
+            return <div>Hello World!</div>;
+        }
+    });
+
+    // 加载组件到 DOM 元素 mountNode
+    //React.render(<HelloMessage />, mountNode);
+    // 我们可以看看React给我们提供了哪些顶层组件
+    console.log( React );
+    ReactDOM.render(<HelloMessage />,document.getElementById('example'));
+</script>
+</body>
+</html>

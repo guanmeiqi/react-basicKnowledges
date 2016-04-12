@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="../build/react.js"></script>
+    <script src="../build/react-dom.js"></script>
+    <!--babel提供的实时编译-->
+    <script src="../build/browser.min.js"></script>
+</head>
+<body>
+<div id="example"></div>
+<script type="text/babel">
+    var Hello = React.createClass({
+    //组件类的PropTypes属性，就是用来验证组件实例的属性是否符合要求。
+        propTypes:{
+            name:React.PropTypes.String.isRequired
+        },
+        getInitialState:function(){
+            return{
+                name:this.ptops.name};
+        },
+        reader :function(){
+            return(
+               <ul>
+                    <li>hello{this.state.name}!</li>
+            </ul>);
+    }
+    })
+    ReactDOM.render(<Hello />,document.getElementById('example'));
+</script>
+</body>
+</html>

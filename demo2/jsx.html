@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="../build/react.js"></script>
+    <script src="../build/react-dom.js"></script>
+    <!--babel提供的实时编译-->
+    <script src="../build/browser.min.js"></script>
+    <!--react提供的jsx解释器-->
+    <!--<script src="../build/JSXTransformer.js"></script>-->
+</head>
+<body>
+<div id="example"></div>
+<script type="text/babel">
+    //类似 xml 的语法，用来描述组件树
+    var ExampleComponent = React.createClass({
+        render: function () {
+            return (
+                    <div className="navigation">
+                    Hello World!
+            </div>
+            );
+        }
+    });
+
+
+    //不用JSX，用React提供的API写的话
+    var ExampleComponent = React.createClass({
+        render: function () {
+            return (
+                    React.createElement('div', {className: 'navigation'}, 'Hello World!')
+            );
+        }
+    });
+
+    ReactDOM.render(<ExampleComponent />,document.getElementById('example'));
+</script>
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="../build/react.js"></script>
+    <script src="../build/react-dom.js"></script>
+    <!--babel提供的实时编译-->
+    <script src="../build/browser.min.js"></script>
+    <!--react提供的jsx解释器-->
+    <!--<script src="../build/JSXTransformer.js"></script>-->
+</head>
+<body>
+<div id="example1"></div>
+<div id="example2"></div>
+<script type="text/babel">
+    //使用数组组装
+    var ExampleComponent = React.createClass({
+        render: function () {
+            return (
+                    <div>{['cc ', <span>&copy;</span>, ' 2015']}</div>
+            );
+        }
+    });
+
+    ReactDOM.render(<ExampleComponent />,document.getElementById('example1'));
+    //直接插入原始的 HTML
+     var ExampleComponent = React.createClass({
+        render: function () {
+            return (
+                    <div dangerouslySetInnerHTML = {{__html: 'cc &copy; 2015'}} />
+            );
+        }
+    });
+
+    ReactDOM.render(<ExampleComponent />,document.getElementById('example2'));
+
+
+
+
+</script>
+</body>
+</html>

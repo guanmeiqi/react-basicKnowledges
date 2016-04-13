@@ -11,13 +11,22 @@
 <body>
 <div id="example"></div>
 <script type="text/babel">
-    var HelloMessage = React.createClass({
+    var MyTitle = React.createClass({
+        getDefaultProps : function () {
+            return {
+                title : 'Hello World'
+            };
+        },
+
         render: function() {
-            return <div>Hello {this.props.name}</div>;
-        }
-    });
-    // 加载组件到 DOM 元素 mountNode
-    ReactDOM.render(<HelloMessage name="John"/>,document.getElementById('example'));
+            return <h1> {this.props.title} </h1>;
+    }});
+
+    ReactDOM.render(
+    <MyTitle />,
+            document.getElementById('example')
+    );
+    //上面代码会输出"Hello World"。
 </script>
 </body>
 </html>

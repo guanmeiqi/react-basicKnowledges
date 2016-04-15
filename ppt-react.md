@@ -374,30 +374,26 @@ this.props对象的属性与组件的属性一一对应，但是有一个例外�
 ```javascript
 var NotesList = React.createClass({
   render: function() {
-    return (                                                                                                                  
+    return (                                                                                                              
       <ol>{
         React.Children.map(this.props.children, function (child) {
           return <li>{child}</li>;})
       }</ol>
     );
-  }});
-  
+  }}); 
 ReactDOM.render(<NotesList>
     <span>hello</span><span>world</span>
                 </NotesList>，document.body);
 ```
 注意:this.props.children的值有三种可能:
-
 - 如果当前组件没有子节点,它就是 undefined;
 - 如果有一个子节点，数据类型是 object ;
 - 如果有多个子节点，数据类型就是 array 。
-所以，处理 this.props.children 的时候要小心。
+---------------------------------
+React 提供一个工具方法 React.Children 来处理 this.props.children 。用
+React.Children.map 来遍历子节点，而不用担心 this.props.children 的数据类型是
+undefined 还是 object。
 
-[slide]
-
-React 提供一个工具方法 React.Children 来处理 this.props.children 。我们可以用
- React.Children.map 来遍历子节点，而不用担心 this.props.children 的数据类型是
-  undefined 还是 object。
 
 [slide]
 
@@ -502,7 +498,444 @@ ReactDOM.render(<MyComponent />,document.getElementById('example'));
 # 5.event
 
 [slide]
+虚拟事件对象:事件处理器将会传入虚拟事件对象的实例,一个对浏览器本地事件的跨浏览器封装。
+它有和浏览器本地事件相同的属性和方法,包括stopPropagation()和preventDefault(),
+但是没有浏览器兼容问题。
+```javascript
+ //props 事件处理器
+    var HelloWorld = React.createClass({
+        propTypes: {
+            onClick: React.PropTypes.func.isRequired
+        },
+        clickHandle: function () {
+            this.props.onClick.apply(this);
+        },
+        render: function () {
+            return (
+                    < section
+            onClick = {this.clickHandle} >
+                      ...
+                    </section >
+                   );
+         }
+    })
+
+    //传入事件处理器
+    var TouristSpots=React.createClass({
+        clickHandle:function(word){
+            report.reportClick("word",word.id);
+        },
+        render:function(){
+            var word=this.props.word;
+            return(
+                    <div><HelloWorld word={word} onClick={this.clickHandle}/>
+                    </div>
+            );
+        }
+    })
+```
 
 [slide]
+
+支持的事件  
+
+剪贴板事件：
+onCopy onCut onPaste  
+
+键盘事件：
+onKeyDown onKeyPress onKeyUp  
+
+焦点事件：
+onFocus onBlur 
+
+表单事件：
+onChange onInput onSubmit  
+
+鼠标事件：
+onClick onDoubleClick onDrag onDragEnd onDragEnter onDragExit onDragLeave
+onDragOver onDragStart onDrop onMouseDown onMouseEnter onMouseLeave
+onMouseMove onMouseOut onMouseOver onMouseUp 
+
+触摸事件：
+为了使触摸事件生效，在渲染所有组件之前调用 React.initializeTouchEvents(true)。
+onTouchCancel onTouchEnd onTouchMove onTouchStart   
+
+UI 事件：
+onScroll   
+
+鼠标滚轮滚动事件：
+onWheel   
+
+{:&.flexbox.vleft}
 [slide]
+表单事件处理
+
+```
+// 该表单组件里面用到了RadioButtons和Checkboxes
+var FormApp = React.createClass({
+    getInitialState:function(){
+        return {
+            inputValue: '请输入...',
+            selectValue: 'A',
+            radioValue:'B',
+            checkValues:[],
+            textareaValue:'请输入...'
+        }
+    },
+    handleSubmit:function(e){
+        e.preventDefault();
+        var formData = {
+            input: this.refs.goodInput.getDOMNode().value,
+            select: this.refs.goodSelect.getDOMNode().value,
+            textarea: this.refs.goodTextarea.getDOMNode().value,
+            radio: this.state.radioValue,
+            check: this.state.checkValues,
+        }
+
+        console.log('the form result is:')
+        console.log(formData);
+
+        this.refs.goodRadio.saySomething();
+
+    },
+    handleRadio:function(e){
+        this.setState({
+            radioValue: e.target.value,
+        })
+    },
+    handleCheck:function(e){
+        var checkValues = this.state.checkValues.slice();
+        var newVal = e.target.value;
+        var index = checkValues.indexOf(newVal);
+        if( index == -1 ){
+            checkValues.push( newVal )
+        }else{
+            checkValues.splice(index,1);
+        }
+
+        this.setState({
+            checkValues: checkValues,
+        })
+    },
+    render: function(){
+        return (
+            <form onSubmit={this.handleSubmit}>
+                <input ref="goodInput" type="text" defaultValue={this.state.inputValue }/>
+                <br/>
+                选项：
+                <select defaultValue={ this.state.selectValue } ref="goodSelect">
+                    <option value="A">A</option>
+                    <option value="B">B</option>
+                    <option value="C">C</option>
+                    <option value="D">D</option>
+                    <option value="E">E</option>
+                </select>
+                <br/>
+                <p>radio button!</p>
+                <RadioButtons ref="goodRadio" handleRadio={this.handleRadio} />
+                <br/>
+
+                <Checkboxes handleCheck={this.handleCheck} />
+                <br/>
+                <textarea defaultValue={this.state.textareaValue} ref="goodTextarea"></textarea>
+                <button type="submit">提交</button>
+
+            </form>
+        )
+    }
+});
+
+// 定义单选框按钮组
+var RadioButtons = React.createClass({
+    saySomething:function(){
+        alert("yo what's up man!");
+    },
+    render:function(){
+        return (
+            <span>
+                A
+                <input onChange={this.props.handleRadio} name="goodRadio" type="radio" value="A"/>
+                B
+                <input onChange={this.props.handleRadio} name="goodRadio" type="radio" defaultChecked value="B"/>
+                C
+                <input onChange={this.props.handleRadio} name="goodRadio" type="radio" value="C"/>
+            </span>
+        )
+    }
+});
+
+var Checkboxes = React.createClass({
+    render: function(){
+        return (
+            <span>
+                A
+                <input onChange={this.props.handleCheck}  name="goodCheckbox" type="checkbox" value="A"/>
+                B
+                <input onChange={this.props.handleCheck} name="goodCheckbox" type="checkbox" value="B" />
+                C
+                <input onChange={this.props.handleCheck} name="goodCheckbox" type="checkbox" value="C" />
+            </span>
+        )
+    }
+})
+
+
+ReactDOM.render(<FormApp />, document.getElementById('app'));
+```
+
+[slide]
+多个简单的组件嵌套，可构成一个复杂的复合组件，从而完成复杂的交互逻辑，实现页面功能。
+
+```javascript
+// 定义一个头像avatar的组件
+var Avatar = React.createClass({
+  render: function() {
+    return (
+      <div>
+        <ProfilePic link={this.props.link} />
+        <ProfileLink name={this.props.name} />
+      </div>
+    );
+  }
+});
+
+// 定义一个人物图片ProfilePic组件
+var ProfilePic = React.createClass({
+  render: function() {
+    return (
+      <img src={this.props.link} />
+    );
+  }
+});
+
+// 定义一个人物链接ProfileLink组件
+var ProfileLink = React.createClass({
+  render: function() {
+    return (
+      <a href={'https://github.com/' + this.props.name}>
+        {this.props.name}
+      </a>
+    );
+  }
+});
+
+// 渲染到容器
+ReactDOM.render(
+  <Avatar
+    name="GuoYongfeng"
+    link="https://avatars2.githubusercontent.com/u/8686869?v=3&s=460"
+  />,
+  document.getElementById('example')
+);
+
+```
+
+[slide]
+React的组件拥有一套清晰完整而且非常容易理解的生命周期机制，大体可以分为三个过程：
+初始化、更新和销毁，在组件生命周期中，随着组件的props或者state发生改变，它的虚拟DOM
+和DOM表现也将有相应的变化。
+[slide]
+组件的生命周期分成三个状态：
+---
+- Mounting：已插入真实 DOM  
+- Updating：正在被重新渲染   
+- Unmounting：已移出真实 DOM  
+
+---------------------
+React 为每个状态都提供了两种处理函数，will 函数在进入状态之前调用，did 函数在进入状态之后调用，三种状态共计五种处理函数。
+componentWillMount()
+componentDidMount()
+componentWillUpdate(object nextProps, object nextState)
+componentDidUpdate(object prevProps, object prevState)
+componentWillUnmount()
+此外，React 还提供两种特殊状态的处理函数。
+componentWillReceiveProps(object nextProps)：已加载组件收到新的参数时调用
+shouldComponentUpdate(object nextProps, object nextState)：组件判断是否重新渲染时调用
+
+[slide]
+不同生命周期内可以自定义的函数
+
+----
+1. 初始化  
+getDefaultProps  只调用一次，实例之间共享引用
+getInitialState  初始化每个实例特有的状态
+conponentWillMount render之前最后一次修改状态的机会
+render    只能访问this。props和this。state,只有一个顶层组件，不润许修改状态和DOM输出
+componentDidMount  成功render并渲染完成真实DOM之后触发，可以修改DOM
+2. 运行中  
+componentWillReceiveProps 父组件修改属性触发，可以修改新属性，修改状态
+shouldComponentUpdate  返回false会阻止render调用（让开发者决定是否更新）
+componentWillUpdate（日志打印） 不能修改属性和状态
+render    只能访问this。props和this。state,只有一个顶层组件，不润许修改状态和DOM输出
+componentDidUpdate  可以修改DOM
+3. 销毁  
+componentWillUnmount  在删除组件之前进行清理操作，比如计时器和事件监听器
+
+
+[slide]
+mixin 是一个普通对象，通过 mixin 可以在不同组件间共享代码
+
+```
+var mixin = {
+    propTypes: {
+        title: React.PropTypes.string,
+    },
+
+    getDefaultProps(){
+        return {
+            title:'default'
+        };
+    },
+};
+
+var A = React.createClass({
+    mixins: [mixin],
+    render(){
+        return <i>{this.props.title}</i>
+    }
+});
+
+var B = React.createClass({
+    mixins: [mixin],
+    render(){
+        return <b>{this.props.title}</b>
+    }
+});
+
+React.render(<div>
+<B/> <A title={2}/>
+<A/>
+</div>,document.getElementById('container'));
+
+```
+
+[slide]
+
+```
+// 定义一个按钮组件
+var BootstrapButton = React.createClass({
+  render: function() {
+    return (
+      <a {...this.props}
+        href="javascript:;"
+        role="button"
+        className={(this.props.className || '') + ' btn'} />
+    );
+  }
+});
+// 定义一个弹框组件
+var BootstrapModal = React.createClass({
+  // 节点插入到真实的DOM，使用jquery
+  componentDidMount: function() {
+    // 调用bootstrap插件
+    $(this.refs.root).modal({backdrop: 'static', keyboard: false, show: false});
+  },
+  // 在组件销毁的时候，记得把之前绑定的方法给干掉
+  componentWillUnmount: function() {
+    $(this.refs.root).off('hidden', this.handleHidden);
+  },
+  close: function() {
+    $(this.refs.root).modal('hide');
+  },
+  open: function() {
+    $(this.refs.root).modal('show');
+  },
+  render: function() {
+    var confirmButton = null;
+    var cancelButton = null;
+
+    if (this.props.confirm) {
+      confirmButton = (
+        <BootstrapButton
+          onClick={this.handleConfirm}
+          className="btn-primary">
+          {this.props.confirm}
+        </BootstrapButton>
+      );
+    }
+    if (this.props.cancel) {
+      cancelButton = (
+        <BootstrapButton onClick={this.handleCancel} className="btn-default">
+          {this.props.cancel}
+        </BootstrapButton>
+      );
+    }
+
+    return (
+      <div className="modal fade" ref="root">
+        <div className="modal-dialog">
+          <div className="modal-content">
+            <div className="modal-header">
+              <button
+                type="button"
+                className="close"
+                onClick={this.handleCancel}>
+                &times;
+              </button>
+              <h3>{this.props.title}</h3>
+            </div>
+            <div className="modal-body">
+              {this.props.children}
+            </div>
+            <div className="modal-footer">
+              {cancelButton}
+              {confirmButton}
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  },
+  handleCancel: function() {
+    if (this.props.onCancel) {
+      this.props.onCancel();
+    }
+  },
+  handleConfirm: function() {
+    if (this.props.onConfirm) {
+      this.props.onConfirm();
+    }
+  }
+});
+
+// 调用刚才咱们定义的两个组件，写咱们的业务组件
+var Example = React.createClass({
+  handleCancel: function() {
+    if (confirm('亲，确定要取消么')) {
+      this.refs.modal.close();
+    }
+  },
+  render: function() {
+    var modal = null;
+    modal = (
+      <BootstrapModal
+        ref="modal"
+        confirm="OK"
+        cancel="Cancel"
+        onCancel={this.handleCancel}
+        onConfirm={this.closeModal}
+        title="Hello, Bootstrap!">
+          这是一个结合jQuery和Bootstrap而写的组件
+      </BootstrapModal>
+    );
+    return (
+      <div className="example">
+        {modal}
+        <BootstrapButton onClick={this.openModal} className="btn-default">
+          Open modal
+        </BootstrapButton>
+      </div>
+    );
+  },
+  openModal: function() {
+    this.refs.modal.open();
+  },
+  closeModal: function() {
+    this.refs.modal.close();
+  }
+});
+
+ReactDOM.render(<Example />, document.getElementById('example'));
+```
+
 

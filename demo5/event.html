@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="../build/react.js"></script>
+    <script src="../build/react-dom.js"></script>
+    <script src="../build/browser.min.js"></script>
+</head>
+<body>
+<div id="example"></div>
+<script type="text/babel">
+    //props 事件处理器
+    var HelloWorld = React.createClass({
+        propTypes: {
+            onClick: React.PropTypes.func.isRequired
+        },
+        clickHandle: function () {
+            this.props.onClick.apply(this);
+        },
+        render: function () {
+            return (
+                    < section
+            onClick = {this.clickHandle} >
+                      ...
+                    </section >
+                   );
+         }
+    })
+
+    //传入事件处理器
+    var TouristSpots=React.createClass({
+        clickHandle:function(word){
+            report.reportClick("word",word.id);
+        },
+        render:function(){
+            var word=this.props.word;
+            return(
+                    <div><HelloWorld word={word} onClick={this.clickHandle}/>
+                    </div>
+            );
+        }
+    })
+</script>
+</body>
+</html>

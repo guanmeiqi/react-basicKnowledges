@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="../build/react.js"></script>
+    <script src="../build/react-dom.js"></script>
+    <script src="../build/browser.min.js"></script>
+</head>
+<body>
+<div id="example"></div>
+<script type="text/babel">
+    //   在删除组件之前进行清理操作，比如计时器和事件监听器
+    var style = {
+        color: 'red',
+        border: '1px #000 solid'
+    };
+    var HElloWorld = React.createClass({
+                render: function () {
+                    console.log("render 4");
+                    return
+                    <
+                    p > Hello, {this.props.name ? this.props.name : "world"
+                } < / p >
+            },
+            componentWillUnmount:function () {
+        console.log("BOOOKMMM!");
+    }
+    });
+    var HelloUniverse = React.createClass({
+            getInitialState:function(){
+        return {name: ''};
+    },
+    handleChange:function (event) {
+        this.setState({name: event.target.value});
+    },
+    render:function () {
+        if (this.state.name == "123") {
+            return
+        <
+            div > 123 < / div >
+        }
+        return
+    <
+        div >
+        < HElloWorld
+        name = {this.state.name
+    }/>
+    <br / >
+    < input type = "text" onChange = {this.handleChange}/>
+    </div >
+    }
+    });
+
+    var HelloUniverse = React.createClass({
+            getInitialState:function(){
+        return {name: ''};
+    },
+    handleChange:function (event) {
+       if(event.target.value=="123"){
+           React.unmountComponentAtNode(document.getElementByTagName("body")[0]);
+           return;
+       }
+        this.setState({name: event.target.value});
+    },
+    render:function () {
+        return
+    <
+        div >
+        < HElloWorld
+        name = {this.state.name
+    }/>
+    <br / >
+    < input type = "text" onChange = {this.handleChange}/>
+    </div >
+    }
+    });
+    ReactDOM.render( < div style = {style} > < HelloUniverse / > < / div >);
+</script>
+</body>
+</html>

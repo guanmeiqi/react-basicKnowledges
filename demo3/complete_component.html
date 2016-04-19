@@ -13,20 +13,21 @@
     var Hello = React.createClass({
     //组件类的PropTypes属性，就是用来验证组件实例的属性是否符合要求。
         propTypes:{
-            name:React.PropTypes.String.isRequired
+            name:React.PropTypes.string.isRequired
         },
         getInitialState:function(){
             return{
-                name:this.ptops.name};
+                name:this.props.name};
         },
-        reader :function(){
+        render :function(){
             return(
                <ul>
                     <li>hello{this.state.name}!</li>
-            </ul>);
+            </ul>
+            );
     }
     })
-    ReactDOM.render(<Hello />,document.getElementById('example'));
+    ReactDOM.render(<Hello name="guanguan"/>,document.getElementById('example'));
 </script>
 </body>
 </html>

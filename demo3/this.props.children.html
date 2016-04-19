@@ -11,21 +11,26 @@
 <div id="example"></div>
 <script type="text/babel">
     var NotesList = React.createClass({
-                render: function () {
+                render: function() {
                     return (
-                            < ol > {
+                            <ol>
+                            {
                                 React.Children.map(this.props.children, function (child) {
-                                        return
-                                        <li > {child} < / li >;
+                                        return <li>{child}</li>;
                                     })
-                } < / ol >
+                }
+                </ol>
+                        );
+                }
+    });
+
+    ReactDOM.render(
+                    <NotesList>
+                        <span>hello</span>
+                        <span>world</span>
+                    </NotesList>,
+            document.getElementById('example')
     );
-    }});
-
-    ReactDOM.render( < NotesList >
-    < span > hello < /span><span>world</span >
-    < / NotesList >, document.body);
-
 </script>
 </body>
 </html>

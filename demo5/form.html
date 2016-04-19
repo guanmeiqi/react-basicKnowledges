@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <script src="../build/react.js"></script>
     <script src="../build/react-dom.js"></script>
     <script src="../build/browser.min.js"></script>
@@ -10,14 +11,14 @@
 <script type="text/babel">
     // 该表单组件里面用到了RadioButtons和Checkboxes
     var FormApp = React.createClass({
-            getInitialState:function(){
+    getInitialState:function(){
         return {
-            inputValue: '请输入...',
-            selectValue: 'A',
-            radioValue:'B',
-            checkValues:[],
-            textareaValue:'请输入...'
-        }
+                inputValue: '请输入...',
+                selectValue: 'A',
+                radioValue:'B',
+                checkValues:[],
+                textareaValue:'请输入...'
+                }
     },
     handleSubmit:function(e){
         e.preventDefault();

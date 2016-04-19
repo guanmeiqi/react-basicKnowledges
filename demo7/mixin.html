@@ -20,24 +20,22 @@
         },
     };
 
-    var A = React.createClass({
+    var Aaga = React.createClass({
                 mixins: [mixin],
                 render(){
                     return <i>{this.props.title}</i>
     }
     });
 
-    var B = React.createClass({
+    var Bet = React.createClass({
                 mixins: [mixin],
                 render(){
                     return <b>{this.props.title}</b>
     }
     });
 
-    React.render(<div>
-    <B/> <A title={2}/>
-            <A/>
-            </div>,document.getElementById('container'));
+    ReactDOM.render(<div> <Bet/> <Aaga title={2}/> <Aaga/>
+            </div>,document.getElementById('example'));
 
 </script>
 </body>

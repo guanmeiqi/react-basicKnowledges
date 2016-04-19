@@ -8,39 +8,39 @@
 <body>
 <div id="example"></div>
 <script type="text/babel">
-    $(document).ready(
-            function(){
-                var count=0;
-                var  sryle={
-                    color:"red",
-                    border:"1px #000 solid"
-                };
-                var HelloWorld = React.createClass({
-                            getDefaultProps:function(){
-                                console.log("getDefaultProps,1");
-                                return {name:"Tom"};
-                            },
-                            getInitialState:function(){
-                                console.log("getInitialState,2");
-                                return {myCount:count++,
-                                    ready:false};
-                            },
-                            componentWillMount:function(){
-                                console.log("componentWillMount,3");
-                                this.setState({ready:true});
-                            },
-                            render:function(){
-                                console.log("render,4");
-                                return <p ref="childp">hello,{this.props.name?this.props.name:"world"}<br/>{"" +this.state.ready}<!-- {this.state.myCount}--></p>
-                        },
-                        componentDidMount:function(){
-                    console.log("componentDidMount,5");
-                    $(React.findDOMNode(this)).append("surprise!")
-                }
-            });
-    React.render(<div style={style}><helloWorld></HelloWorld></div>,document.body);
-    }
-    )
+    var count=0;
+    var  style={
+               color:"red",
+               border:"1px #000 solid"
+    };
+    var HelloWorld = React.createClass({
+         getDefaultProps:function(){
+              console.log("getDefaultProps,1");
+              return {name:"Tom"};
+         },
+         getInitialState:function(){
+              console.log("getInitialState,2");
+              return {myCount:count++,
+                  ready:false};
+         },
+         componentWillMount:function(){
+              console.log("componentWillMount,3");
+              this.setState({ready:true});
+              },
+         render:function(){
+               console.log("render,4");
+               return(
+                 <p ref="childp">hello,{this.props.name?this.props.name:"world"} <br/>{"" +this.state.ready} </p>
+               )
+         },
+         componentDidMount:function(){
+               console.log("componentDidMount,5");
+               $(React.findDOMNode(this)).append("surprise!")
+         }
+    });
+    ReactDOM.render(<div style={style}><helloWorld/></div>,document.getElementById('example'));
+
+    //{<!-- {this.state.myCount}-->}
 </script>
 </body>
 </html>

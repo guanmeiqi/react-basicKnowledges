@@ -16,36 +16,33 @@
    var names = ['Alice', 'Emily', 'Kate'];
 
     ReactDOM.render(
-    <div>
-    {
-        names.map(function (name) {
-                return <div>Hello, {name}!</div>
-            })
-    }
-    </div>,
-            document.getElementById('example1')
+        <div>
+            {
+                names.map(function (name) {
+                        return <div>Hello, {name}!</div>
+                    })
+            }
+        </div>,
+         document.getElementById('example1')
     );
-    //Use array in JSX//JSX 允许直接在模板插入 JavaScript 变量。如果这个变量是一个数组，则会展开这个数组的所有成员，
+    //Use array in JSX
+    //JSX 允许直接在模板插入 JavaScript 变量。如果这个变量是一个数组，则会展开这个数组的所有成员，
     var arr = [
             <h1>Hello world!</h1>,
-    <h2>React is awesome</h2>,
-    ];
-    ReactDOM.render(
-    <div>{arr}</div>,
-            document.getElementById('example2')
-    );
+            <h2>React is awesome</h2>
+              ];
+    ReactDOM.render(<div>{arr}</div>,document.getElementById('example2'));
 
-    // jsx spread
-    var props = { foo: x, bar: y };
-    var component = <Component { ...props } />;
-   // 这样就相当于：
-    var component = <Component foo={x} bar={y} />
-   //它也可以和普通的XML属性混合使用，需要同名属性，后者将覆盖前者：
-
+    //Props 应该被当作禁止修改的。修改 props 对象可能会导致预料之外的结果，所以最好不要去修改 props 对象。
+    //可以用通过 {...obj} 来批量设置一个对象的键值对到组件的属性，注意顺序比如：
+    var props = {};props.foo =x;props.bar =y;
+    var component = <Component {...props} />;
+    //props 对象的属性会被设置成 Component 的属性。属性也可以被覆盖：
     var props = { foo: 'default' };
     var component = <Component {...props} foo={'override'} />;
-    console.log(component.props.foo); // 'override'
-    ReactDOM.render(component, document.getElementById('example3'));
+    console.log(component.props.foo);
+    // 'override'写在后面的属性值会覆盖前面的属性。
+    // 属性名不能和 js 关键字冲突例如：class-className, readOnly, for-htmlfor
 </script>
 </body>
 </html>
